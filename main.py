@@ -1,4 +1,5 @@
 import tkinter as tk
+from model import DB
 class Main(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
