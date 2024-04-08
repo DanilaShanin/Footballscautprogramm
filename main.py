@@ -88,6 +88,25 @@ class Main(tk.Frame):
         scroll = tk.Scrollbar(self, command=self.tree.yview)
         scroll.pack(side=tk.LEFT, fill=tk.Y)
         self.tree.configure(yscrollcommand=scroll.set)
+
+    def records(self, name, age, height, position, information, citizenship, club, price,pace, shooting, passing, dribbling, defending, physicality):
+        self.db.insert_data(name, age, height, position, information, citizenship, club, price,pace, shooting, passing, dribbling, defending, physicality)
+        self.view_records()
+
+    def update_record(self, name, age, height, position, information, citizenship, club, price,pace, shooting, passing, dribbling, defending, physicality):
+        self.db.c.execute(
+            '''UPDATE footballscaut SET name=?, age=?, height=?, position=?, information=?, citizenship=?, club=?, price=?,pace=?, shooting=?, passing=?, dribbling=?, defending=?, physicality=? WHERE ID=?''',
+            (name, age, height, position, information, citizenship, club, price,pace, shooting, passing, dribbling, defending, physicality,
+             self.tree.set(self.tree.selection()[0], '#1')))
+        self.db.conn.commit()
+        self.view_records()
+
+    def view_records(self):
+        self.db.c.execute('''SELECT * FROM footballscaut''')
+        [self.tree.delete(i) for i in self.tree.get_children()]
+        [self.tree.insert('', 'end', values=row) for row in self.db.c.fetchall()]
+
+
         
         
 if __name__ == "__main__":
