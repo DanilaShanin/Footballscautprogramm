@@ -106,7 +106,46 @@ class Main(tk.Frame):
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.c.fetchall()]
 
+ def init_edit(self):
+        self.title('Внесение изменений')
+        btn_edit = ttk.Button(self, text='Изменить')
+        btn_edit.place(x=200, y=500)
+        btn_edit.bind('<Button-1>', lambda event: self.view.update_record(self.entry_name.get(),
+                                                                          self.entry_age.get(),
+                                                                          self.entry_height.get(),
+                                                                          self.entry_position.get(),
+                                                                          self.entry_information.get(),
+                                                                          self.entry_citizenship.get(),
+                                                                          self.entry_club.get(),
+                                                                          self.entry_price.get(),
+                                                                          self.entry_pace.get(),
+                                                                          self.entry_shooting.get(),
+                                                                          self.entry_passing.get(),
+                                                                          self.entry_dribbling.get(),
+                                                                          self.entry_defending.get(),
+                                                                          self.entry_physicality.get()))
+        self.btn_ok.destroy()
 
+
+
+    def default_data(self):
+        self.db.c.execute('''SELECT * FROM footballscaut WHERE id=?''',
+                          (self.view.tree.set(self.view.tree.selection()[0], '#1'),))
+        row = self.db.c.fetchone()
+        self.entry_name.insert(0, row[1])
+        self.entry_age.insert(0, row[2])
+        self.entry_height.insert(0, row[3])
+        self.entry_position.insert(0, row[4])
+        self.entry_information.insert(0, row[5])
+        self.entry_citizenship.insert(0, row[6])
+        self.entry_club.insert(0, row[7])
+        self.entry_price.insert(0, row[8])
+        self.entry_pace.insert(0, row[9])
+        self.entry_shooting.insert(0, row[10])
+        self.entry_passing.insert(0, row[11])
+        self.entry_dribbling.insert(0, row[12])
+        self.entry_defending.insert(0, row[13])
+        self.entry_physicality.insert(0, row[14])
         
         
 if __name__ == "__main__":
